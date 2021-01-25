@@ -19,8 +19,6 @@ export const InputStyle = styled.label`
         return theme.borderRadius
     }};
 
-    margin: 0 3px;
-
     border: 1px solid ${({ theme }) => theme.colors.primary};
     padding: 0 15px;
 

@@ -2,12 +2,11 @@ import styled from 'styled-components'
 
 interface IButton {
     type: 'main' | 'secondary'
-    text: string
 }
 
-const Button: React.FC<IButton> = ({ type, text }) => {
-    if (type === 'main') return <MainButtonStyle>{text}</MainButtonStyle>
-    return <SecondaryButtonStyle>{text}</SecondaryButtonStyle>
+const Button: React.FC<IButton> = ({ type, children }) => {
+    if (type === 'main') return <MainButtonStyle>{children}</MainButtonStyle>
+    return <SecondaryButtonStyle>{children}</SecondaryButtonStyle>
 }
 
 export default Button
@@ -17,6 +16,8 @@ export const ButtonStyle = styled.button`
     align-items: center;
     justify-content: center;
 
+    width: 100%;
+
     height: 40px;
     border-radius: ${({ theme }) => {
         return theme.borderRadius
@@ -25,8 +26,6 @@ export const ButtonStyle = styled.button`
 
     font-size: 12px;
     font-weight: bold;
-
-    margin: 0 3px;
 
     cursor: pointer;
     transition: 0.5s;

@@ -1,7 +1,9 @@
 import styled from 'styled-components'
+
 import Button from '../src/components/Button'
 import GitHubCorner from '../src/components/GitHubCorner'
 import Input from '../src/components/Input'
+import QuizWidget from '../src/components/QuizWidget'
 
 const AluraQuiz = () => {
     return (
@@ -23,26 +25,39 @@ const AluraQuiz = () => {
                     </p>
                     <div className="cta-buttons">
                         <Input />
-                        <Button type={'secondary'} text={'PESQUISAR'} />
-                        <Button type={'main'} text={'CRIAR'} />
+                        <Button type={'secondary'}>PESQUISAR</Button>
+                        <Button type={'main'}>CRIAR</Button>
                     </div>
                 </div>
             </HeroSectionContainer>
             <MainSectionContainer>
-                <Widget>
-                    <WidgetHeader>oi</WidgetHeader>
-                    <WidgetContent>oi</WidgetContent>
-                </Widget>
-                <Widget>
-                    <WidgetHeader>oi</WidgetHeader>
-                    <WidgetContent>oi</WidgetContent>
-                </Widget>
-                <Widget>
-                    <WidgetHeader>oi</WidgetHeader>
-                    <WidgetContent>oi</WidgetContent>
-                </Widget>
+                <QuizWidget
+                    title="Friends"
+                    description="Mostre que você manja de friends"
+                    login=""
+                />
+                <QuizWidget
+                    title="Friends"
+                    description="Mostre que você manja de friends"
+                    login=""
+                />
+                <QuizWidget
+                    title="Friends"
+                    description="Mostre que você manja de friends"
+                    login=""
+                />
+                <QuizWidget
+                    title="Friends"
+                    description="Mostre que você manja de friends"
+                    login=""
+                />
+                <QuizWidget
+                    title="Friends"
+                    description="Mostre que você manja de friends"
+                    login=""
+                />
             </MainSectionContainer>
-            <GitHubCorner projectUrl="" />
+            <GitHubCorner projectUrl="https://github.com/fischerafael/alura-quiz-frontend" />
         </PageContainer>
     )
 }
@@ -55,13 +70,25 @@ export const MainSectionContainer = styled.main`
     margin-top: -50px;
 
     max-width: 1000px;
-    width: 100%;
+    width: 90%;
 
     min-height: 20vh;
 
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 15px;
+
+    @media (max-width: 820px) {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 600px) {
+        grid-template-columns: 1fr;
+    }
+
+    @media (max-width: 480px) {
+        margin-top: 50px;
+    }
 `
 
 export const PageContainer = styled.div`
@@ -73,12 +100,14 @@ export const PageContainer = styled.div`
     min-height: 100vh;
 
     background: ${(props) => props.theme.colors.mainBg};
+
+    padding-bottom: 50px;
 `
 export const HeroSectionContainer = styled.div`
     max-width: 1000px;
-    width: 100%;
+    width: 90%;
 
-    height: 80vh;
+    min-height: 80vh;
 
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -150,59 +179,24 @@ export const HeroSectionContainer = styled.div`
             width: 100%;
 
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-gap: 15px;
+
+            @media (max-width: 480px) {
+                grid-template-columns: 1fr;
+            }
         }
     }
-`
-export const Widget = styled.div`
-    margin-top: 24px;
-    margin-bottom: 24px;
-    border: 1px solid ${({ theme }) => theme.colors.primary};
-    background-color: ${({ theme }) => {
-        return theme.colors.mainBg
-    }};
-    border-radius: ${({ theme }) => {
-        return theme.borderRadius
-    }};
-    overflow: hidden;
 
-    h1,
-    h2,
-    h3 {
-        font-size: 16px;
-        font-weight: 700;
-        line-height: 1;
-        margin-bottom: 0;
-    }
+    @media (max-width: 820px) {
+        grid-template-columns: 1fr;
 
-    p {
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 1.3;
-        padding: 5px;
-    }
-`
-export const WidgetHeader = styled.header`
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 18px 32px;
-    background-color: ${({ theme }) => theme.colors.primary};
+        .hero-img {
+            display: none;
+        }
 
-    * {
-        margin: 0;
-    }
-`
-export const WidgetContent = styled.div`
-    padding: 24px 32px 32px 32px;
-    & > *:first-child {
-        margin-top: 0;
-    }
-    & > *:last-child {
-        margin-bottom: 0;
-    }
-    ul {
-        list-style: none;
-        padding: 0;
+        .actions {
+            padding: 0;
+        }
     }
 `
