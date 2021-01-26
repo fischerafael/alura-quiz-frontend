@@ -17,14 +17,14 @@ const AluraQuiz = () => {
                 <div className="actions">
                     <img src={'logoALura.svg'} alt="Logo Alura" />
                     <h1>
-                        Crie e responda quizes sobre os mais variados assuntos
+                        Responda e crie quizes sobre os mais variados assuntos
                     </h1>
                     <p>
                         O AluraQuiz permite que você crie quizes personalizados
                         e teste o conhecimento de seus amigos
                     </p>
                     <div className="cta-buttons">
-                        <Input />
+                        <Input label="Nome do Quiz" />
                         <Button type={'secondary'}>PESQUISAR</Button>
                         <Button type={'main'}>CRIAR</Button>
                     </div>
@@ -37,12 +37,12 @@ const AluraQuiz = () => {
                     login=""
                 />
                 <QuizWidget
-                    title="Friends"
+                    title="House"
                     description="Mostre que você manja de friends"
                     login=""
                 />
                 <QuizWidget
-                    title="Friends"
+                    title="Pokemon"
                     description="Mostre que você manja de friends"
                     login=""
                 />

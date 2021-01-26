@@ -1,12 +1,22 @@
 import styled from 'styled-components'
 
 interface IButton {
-    type: 'main' | 'secondary'
+    type: 'main' | 'secondary' | 'widget'
+    onClick?: (e: any) => void
 }
 
-const Button: React.FC<IButton> = ({ type, children }) => {
-    if (type === 'main') return <MainButtonStyle>{children}</MainButtonStyle>
-    return <SecondaryButtonStyle>{children}</SecondaryButtonStyle>
+const Button: React.FC<IButton> = ({ type, children, onClick }) => {
+    if (type === 'main')
+        return <MainButtonStyle onClick={onClick}>{children}</MainButtonStyle>
+    if (type === 'widget')
+        return (
+            <WidgetButtonStyle onClick={onClick}>{children}</WidgetButtonStyle>
+        )
+    return (
+        <SecondaryButtonStyle onClick={onClick}>
+            {children}
+        </SecondaryButtonStyle>
+    )
 }
 
 export default Button
@@ -18,7 +28,7 @@ export const ButtonStyle = styled.button`
 
     width: 100%;
 
-    height: 40px;
+    height: 50px;
     border-radius: ${({ theme }) => {
         return theme.borderRadius
     }};
@@ -61,4 +71,7 @@ export const SecondaryButtonStyle = styled(ButtonStyle)`
             return theme.colors.primary
         }};
     }
+`
+export const WidgetButtonStyle = styled(MainButtonStyle)`
+    margin-top: 15px;
 `

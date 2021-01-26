@@ -56,6 +56,7 @@ export const WidgetContent = styled.div`
 `
 export const WidgetFooter = styled.header`
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding: 24px 32px 32px 32px;

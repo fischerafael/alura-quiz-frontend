@@ -1,17 +1,28 @@
 import styled from 'styled-components'
 
-const Input = () => {
+interface IInput {
+    label: string
+    value?: any
+    setValue?: (e: any) => void
+}
+
+const Input: React.FC<IInput> = ({ label, setValue, value }) => {
     return (
-        <InputStyle>
-            <span>Pesquisar</span>
-            <input type="text" placeholder="Ex: Friends, Javascript" />
-        </InputStyle>
+        <HomeInputStyle>
+            <span>{label}</span>
+            <input
+                type="text"
+                placeholder="Ex: Friends, Javascript"
+                onChange={(e: any) => setValue(e.target.value)}
+                value={value}
+            />
+        </HomeInputStyle>
     )
 }
 
 export default Input
 
-export const InputStyle = styled.label`
+export const DefaultInputStyle = styled.label`
     background-color: ${({ theme }) => {
         return theme.colors.mainBg
     }};
@@ -20,9 +31,12 @@ export const InputStyle = styled.label`
     }};
 
     border: 1px solid ${({ theme }) => theme.colors.primary};
+
+    height: 50px;
+
     padding: 0 15px;
 
-    height: 40px;
+    width: 100%;
 
     display: flex;
     flex-direction: column;
@@ -41,3 +55,5 @@ export const InputStyle = styled.label`
         color: ${({ theme }) => theme.colors.contrastText};
     }
 `
+
+export const HomeInputStyle = styled(DefaultInputStyle)``
