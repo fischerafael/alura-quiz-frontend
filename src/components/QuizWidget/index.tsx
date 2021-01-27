@@ -31,8 +31,7 @@ const QuizWidget: React.FC<IQuizWidget> = ({
     function quizNavigateHandler(e: any) {
         e.preventDefault()
         alert(`Clicou no ${title}`)
-        //router.push(`/quiz/${name}`)
-        router.push('/quiz')
+        router.push(`/${login}`)
     }
 
     return (

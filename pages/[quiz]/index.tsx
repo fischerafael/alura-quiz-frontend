@@ -4,9 +4,13 @@ import { PageContainer } from '..'
 import styled from 'styled-components'
 import screenStates from '../../src/services/screen-states'
 import QuestinWidget from '../../src/components/QuestionWidget'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps } from 'next'
+import api from '../../src/services/api'
 
-const Quiz = () => {
+const Quiz = ({ data }) => {
     const [screenState, setScreenState] = useState(screenStates.QUIZ)
+
+    console.log(data)
 
     return (
         <PageContainer>
@@ -22,6 +26,35 @@ const Quiz = () => {
 }
 
 export default Quiz
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const data = await getQuiz(context.params.quiz as string)
+
+    async function getQuiz(quiz: string) {
+        try {
+            const response = await api.get(`/quiz/${quiz}`)
+            const { data } = response
+            return data
+        } catch (err) {
+            return err
+        }
+    }
+
+    if (!data.login) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+
+    return {
+        props: {
+            data
+        }
+    }
+}
 
 export const QuizContainer = styled.div`
     width: 100%;
