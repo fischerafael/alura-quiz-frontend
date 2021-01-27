@@ -54,10 +54,49 @@ export const WidgetContent = styled.div`
         padding: 0;
     }
 `
+export const WidgetQuestionContent = styled.div`
+    padding: 24px 32px 32px 32px;
+    h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+    p {
+        margin-top: 15px;
+        margin-bottom: 0;
+        padding: 0;
+        line-height: 1;
+        font-size: 12px;
+    }
+`
 export const WidgetFooter = styled.header`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     padding: 24px 32px 32px 32px;
+`
+export const WidgetImage = styled.img`
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+`
+export const WidgetForm = styled.form`
+    padding: 24px 32px 32px 32px;
+`
+export const WidgetTopic = styled.a`
+    outline: 0;
+    text-decoration: none;
+    color: ${({ theme }) => theme.colors.contrastText};
+    background-color: ${({ theme }) => `${theme.colors.primary}40`};
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    border-radius: ${({ theme }) => theme.borderRadius};
+    transition: 0.3s;
+    display: block;
+
+    &:hover,
+    &:focus {
+        opacity: 0.5;
+    }
 `

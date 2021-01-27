@@ -31,7 +31,8 @@ const QuizWidget: React.FC<IQuizWidget> = ({
     function quizNavigateHandler(e: any) {
         e.preventDefault()
         alert(`Clicou no ${title}`)
-        router.push(`/quiz?name=${name}`)
+        //router.push(`/quiz/${name}`)
+        router.push('/quiz')
     }
 
     return (
@@ -43,9 +44,10 @@ const QuizWidget: React.FC<IQuizWidget> = ({
             <WidgetContent>{description}</WidgetContent>
             <WidgetFooter>
                 <Input
-                    label="Nome do Jogador"
+                    label="Digite seu nome"
                     value={name}
                     setValue={setName}
+                    placeholder="3 letras no mínimo"
                 />
                 {name.length < 3 ? null : (
                     <Button type="widget" onClick={quizNavigateHandler}>
