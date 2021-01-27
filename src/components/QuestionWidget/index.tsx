@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Widget,
     WidgetForm,
@@ -7,25 +7,60 @@ import {
     WidgetQuestionContent,
     WidgetTopic
 } from '../../styles/WidgetStyle'
+import { MainButtonStyle } from '../Button'
 
-const QuestinWidget = () => {
+const QuestinWidget = ({
+    totalQuestions,
+    questionIndex,
+    question,
+    onSubmit,
+    addCorrectAnswer
+}) => {
+    const questionId = `question__${questionIndex}`
+
+    const [answer, setAnswer] = useState(0)
+
     return (
         <Widget>
             <WidgetHeader>
-                <h3>Pergunta 3 de 5</h3>
+                <h3>{`Pergunta ${questionIndex + 1} de ${totalQuestions}`}</h3>
             </WidgetHeader>
-            <WidgetImage
-                src="https://cdn.ome.lt/EtOkRh4EAWJSpsDL7Or8lSphlcM=/1200x630/smart/extras/conteudos/office.png"
-                alt="The Office"
-            />
+            <WidgetImage src={question.image} alt="The Office" />
             <WidgetQuestionContent>
-                <h2>Com quem a Pam namora?</h2>
-                <p>Pam, a secretária, namora com alguém</p>
+                <h2>{question.title}</h2>
+                <p>{question.description}</p>
             </WidgetQuestionContent>
-            <WidgetForm>
-                <WidgetTopic>Jim</WidgetTopic>
-                <WidgetTopic>Andy</WidgetTopic>
+            <WidgetForm as="label">
+                {question.alternatives.map((alternative, alternativeIndex) => {
+                    const alternativeId = `alternative__${alternativeIndex}`
+                    return (
+                        <WidgetTopic
+                            key={alternativeIndex}
+                            as="label"
+                            htmlFor={alternativeId}
+                        >
+                            <input
+                                type="radio"
+                                id={alternativeId}
+                                name={questionId}
+                                onChange={() => setAnswer(alternativeIndex)}
+                            />
+                            {alternative}
+                        </WidgetTopic>
+                    )
+                })}
             </WidgetForm>
+            <MainButtonStyle
+                onClick={(e) => {
+                    e.preventDefault
+                    if (answer === +question.answer) {
+                        addCorrectAnswer()
+                    }
+                    onSubmit()
+                }}
+            >
+                Confirmar
+            </MainButtonStyle>
         </Widget>
     )
 }
