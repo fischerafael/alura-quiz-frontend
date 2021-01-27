@@ -15,8 +15,10 @@ const AluraQuiz = ({ data }) => {
 
     useEffect(() => {
         setFilteredData(
-            initialData.filter((item) =>
-                item.title.toLowerCase().includes(search)
+            initialData.filter(
+                (item) =>
+                    item.title.toLowerCase().includes(search) ||
+                    item.title.includes(search)
             )
         )
     }, [search])
