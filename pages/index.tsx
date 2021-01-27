@@ -15,7 +15,7 @@ const AluraQuiz = () => {
                     <div className="linear-gradient-b"></div>
                 </div>
                 <div className="actions">
-                    <img src={'logoALura.svg'} alt="Logo Alura" />
+                    <img src={'logo-alura.svg'} alt="Logo Alura" />
                     <h1>
                         Responda e crie quizes sobre os mais variados assuntos
                     </h1>
