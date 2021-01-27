@@ -1,11 +1,26 @@
 import styled from 'styled-components'
+import { GetStaticProps } from 'next'
 
 import Button from '../src/components/Button'
 import GitHubCorner from '../src/components/GitHubCorner'
 import Input from '../src/components/Input'
 import QuizWidget from '../src/components/QuizWidget'
+import api from '../src/services/api'
+import { useEffect, useState } from 'react'
 
-const AluraQuiz = () => {
+const AluraQuiz = ({ data }) => {
+    const [initialData, setInitalData] = useState(data)
+    const [search, setSearch] = useState('')
+    const [filteredData, setFilteredData] = useState(initialData)
+
+    useEffect(() => {
+        setFilteredData(
+            initialData.filter((item) =>
+                item.title.toLowerCase().includes(search)
+            )
+        )
+    }, [search])
+
     return (
         <PageContainer>
             <HeroSectionContainer>
@@ -24,38 +39,27 @@ const AluraQuiz = () => {
                         e teste o conhecimento de seus amigos
                     </p>
                     <div className="cta-buttons">
-                        <Input label="Nome do Quiz" />
-                        <Button type={'secondary'}>PESQUISAR</Button>
-                        <Button type={'main'}>CRIAR</Button>
+                        <Input
+                            label="Pesquisar Quiz Existente"
+                            placeholder="Insira o título do quiz"
+                            value={search}
+                            setValue={setSearch}
+                        />
+                        <Button type={'secondary'}>CRIAR NOVO QUIZ</Button>
                     </div>
                 </div>
             </HeroSectionContainer>
             <MainSectionContainer>
-                <QuizWidget
-                    title="Friends"
-                    description="Mostre que você manja de friends"
-                    login=""
-                />
-                <QuizWidget
-                    title="House"
-                    description="Mostre que você manja de friends"
-                    login=""
-                />
-                <QuizWidget
-                    title="Pokemon"
-                    description="Mostre que você manja de friends"
-                    login=""
-                />
-                <QuizWidget
-                    title="Friends"
-                    description="Mostre que você manja de friends"
-                    login=""
-                />
-                <QuizWidget
-                    title="Friends"
-                    description="Mostre que você manja de friends"
-                    login=""
-                />
+                {filteredData.lenght !== 0 &&
+                    filteredData.map((item) => (
+                        <QuizWidget
+                            key={item._id}
+                            title={item.title}
+                            description={item.description}
+                            login={item.login}
+                            background={item.background}
+                        />
+                    ))}
             </MainSectionContainer>
             <GitHubCorner projectUrl="https://github.com/fischerafael/alura-quiz-frontend" />
         </PageContainer>
@@ -63,6 +67,26 @@ const AluraQuiz = () => {
 }
 
 export default AluraQuiz
+
+export const getStaticProps: GetStaticProps = async (context) => {
+    const data = await getQuizesService()
+
+    async function getQuizesService() {
+        try {
+            const response = await api.get('/quiz')
+            const { data } = response
+            return data
+        } catch (err) {
+            return 'error'
+        }
+    }
+
+    return {
+        props: {
+            data: data
+        }
+    }
+}
 
 export const MainSectionContainer = styled.main`
     z-index: 10;
@@ -179,7 +203,7 @@ export const HeroSectionContainer = styled.div`
             width: 100%;
 
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
             grid-gap: 15px;
 
             @media (max-width: 480px) {

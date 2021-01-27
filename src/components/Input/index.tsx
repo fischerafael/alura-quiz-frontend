@@ -2,17 +2,18 @@ import styled from 'styled-components'
 
 interface IInput {
     label: string
+    placeholder?: string
     value?: any
     setValue?: (e: any) => void
 }
 
-const Input: React.FC<IInput> = ({ label, setValue, value }) => {
+const Input: React.FC<IInput> = ({ label, setValue, value, placeholder }) => {
     return (
         <HomeInputStyle>
             <span>{label}</span>
             <input
                 type="text"
-                placeholder="Ex: Friends, Javascript"
+                placeholder={placeholder}
                 onChange={(e: any) => setValue(e.target.value)}
                 value={value}
             />
