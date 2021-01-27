@@ -13,6 +13,8 @@ const AluraQuiz = ({ data }) => {
     const [search, setSearch] = useState('')
     const [filteredData, setFilteredData] = useState(initialData)
 
+    console.log(filteredData)
+
     useEffect(() => {
         setFilteredData(
             initialData.filter(
@@ -60,6 +62,7 @@ const AluraQuiz = ({ data }) => {
                             description={item.description}
                             login={item.login}
                             background={item.background}
+                            players={item.players}
                         />
                     ))}
             </MainSectionContainer>

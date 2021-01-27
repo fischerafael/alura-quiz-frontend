@@ -17,13 +17,19 @@ interface IQuizWidget {
     description: string
     login: string
     background: string
+    players: {
+        time: number
+        score: number
+        name: string
+    }[]
 }
 
 const QuizWidget: React.FC<IQuizWidget> = ({
     title,
     description,
     login,
-    background
+    background,
+    players
 }) => {
     const router = useRouter()
     const [name, setName] = useState('')
@@ -54,11 +60,87 @@ const QuizWidget: React.FC<IQuizWidget> = ({
                     </Button>
                 )}
             </WidgetFooter>
+
+            <QuizWidgetRanking>
+                {players.length > 0 && (
+                    <h2 className="ranking-title">Ranking</h2>
+                )}
+                {players.map((player) => (
+                    <div className="ranking">
+                        <h2>{player.name}</h2>
+                        <div>
+                            <h3>{player.score}</h3>
+                            <p>pontos</p>
+                        </div>
+                    </div>
+                ))}
+            </QuizWidgetRanking>
         </Widget>
     )
 }
 
 export default QuizWidget
+
+export const QuizWidgetRanking = styled.div`
+    padding: 0 32px;
+    padding-bottom: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    .ranking-title {
+        align-self: flex-start;
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .ranking {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        padding: 0 32px;
+
+        width: 100%;
+        border: 1px solid ${({ theme }) => theme.colors.primary};
+        border-radius: ${({ theme }) => theme.borderRadius};
+
+        h2 {
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+
+            width: 100%;
+
+            align-items: flex-end;
+
+            h3 {
+                margin-top: 15px;
+                margin-bottom: 0;
+
+                padding: 0;
+                line-height: 1;
+            }
+
+            p {
+                font-size: 10px;
+                padding: 0;
+                line-height: 1;
+            }
+        }
+    }
+`
 
 export const QuizWidgetHeader = styled.header`
     position: relative;

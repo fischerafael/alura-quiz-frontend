@@ -12,6 +12,7 @@ import {
     WidgetContent,
     WidgetHeader
 } from '../../src/styles/WidgetStyle'
+import { MainButtonStyle } from '../../src/components/Button'
 
 const Quiz = ({ data, questions }) => {
     const [initialTime] = useState(Date.now())
@@ -33,7 +34,7 @@ const Quiz = ({ data, questions }) => {
         const nextQuestion = currentQuestion + 1
         if (nextQuestion === totalQuestions) {
             setScreenState(screenStates.RESULT)
-            setFinalTime(Date.now())
+            setFinalTime(Date.now() - initialTime)
             return
         }
         setCurrentQuestion(nextQuestion)
@@ -41,6 +42,29 @@ const Quiz = ({ data, questions }) => {
 
     function addCorrectAnswer() {
         setCorrectAnswers(correctAnswers + 1)
+    }
+
+    async function handleReplay(e) {
+        e.preventDefault()
+        await postScoreToQuiz()
+        router.push('/')
+    }
+
+    async function postScoreToQuiz() {
+        try {
+            const response = await api.post(`/quiz/${data.login}/addplayer`, {
+                name: playername,
+                score: calculatePoints(
+                    correctAnswers,
+                    finalTime,
+                    totalQuestions
+                ),
+                time: finalTime
+            })
+            console.log(response)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     if (screenState === screenStates.QUIZ)
@@ -76,15 +100,17 @@ const Quiz = ({ data, questions }) => {
                         </WidgetHeader>
                         <WidgetContent>
                             <p>{`Parabéns ${playername}, você acertou ${correctAnswers} questões em ${(
-                                (finalTime - initialTime) /
-                                1000
+                                finalTime / 1000
                             ).toFixed(2)} segundos`}</p>
-                            <h2>{`Você fez ${(
-                                (correctAnswers * 100 -
-                                    (finalTime - initialTime) / 1000) /
+                            <h2>{`Você fez ${calculatePoints(
+                                correctAnswers,
+                                finalTime,
                                 totalQuestions
-                            ).toFixed(2)} pontos.`}</h2>
+                            )} pontos.`}</h2>
                         </WidgetContent>
+                        <MainButtonStyle onClick={handleReplay}>
+                            Jogar outros quizes
+                        </MainButtonStyle>
                     </Widget>
                 </ResultContainer>
             </PageContainer>
@@ -92,6 +118,17 @@ const Quiz = ({ data, questions }) => {
 }
 
 export default Quiz
+
+export function calculatePoints(
+    correctAnswer: number,
+    time: number,
+    totalQuestions: number
+) {
+    const absoluteScore = correctAnswer * 100 - time / 1000
+    const finalScore = absoluteScore / totalQuestions
+    const formattedPoints = finalScore.toFixed(2)
+    return formattedPoints
+}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const login = context.params.quiz as string
