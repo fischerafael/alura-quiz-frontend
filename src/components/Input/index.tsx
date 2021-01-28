@@ -1,13 +1,34 @@
 import styled from 'styled-components'
+import { DefaultInputStyle } from '../../styles/InputStyle'
 
 interface IInput {
     label: string
     placeholder?: string
     value?: any
+    login?: boolean
     setValue?: (e: any) => void
 }
 
-const Input: React.FC<IInput> = ({ label, setValue, value, placeholder }) => {
+const Input: React.FC<IInput> = ({
+    label,
+    setValue,
+    value,
+    placeholder,
+    login
+}) => {
+    if (login)
+        return (
+            <LoginInputStyle>
+                <span>{label}</span>
+                <input
+                    type="text"
+                    placeholder={placeholder}
+                    onChange={(e: any) => setValue(e.target.value)}
+                    value={value}
+                />
+            </LoginInputStyle>
+        )
+
     return (
         <HomeInputStyle>
             <span>{label}</span>
@@ -23,38 +44,7 @@ const Input: React.FC<IInput> = ({ label, setValue, value, placeholder }) => {
 
 export default Input
 
-export const DefaultInputStyle = styled.label`
-    background-color: ${({ theme }) => {
-        return theme.colors.mainBg
-    }};
-    border-radius: ${({ theme }) => {
-        return theme.borderRadius
-    }};
-
-    border: 1px solid ${({ theme }) => theme.colors.primary};
-
-    height: 50px;
-
-    padding: 0 15px;
-
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    span {
-        font-size: 10px;
-        color: ${({ theme }) => theme.colors.secondary};
-        margin-bottom: 3px;
-    }
-
-    input {
-        background: transparent;
-        border: none;
-        outline: none;
-        color: ${({ theme }) => theme.colors.contrastText};
-    }
-`
-
 export const HomeInputStyle = styled(DefaultInputStyle)``
+export const LoginInputStyle = styled(DefaultInputStyle)`
+    margin: 7.5px 0;
+`

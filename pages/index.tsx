@@ -154,7 +154,7 @@ export const HeroSectionContainer = styled.div`
             );
 
             height: 100%;
-            width: 50%;
+            width: 80%;
         }
 
         img {
@@ -177,7 +177,7 @@ export const HeroSectionContainer = styled.div`
             );
 
             height: 100%;
-            width: 50%;
+            width: 80%;
         }
     }
 

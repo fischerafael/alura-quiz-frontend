@@ -28,8 +28,6 @@ const Quiz = ({ data, questions }) => {
         return total
     }, 0)
 
-    console.log('total', rightAnswers)
-
     const [screenState, setScreenState] = useState(screenStates.QUIZ)
 
     const router = useRouter()
