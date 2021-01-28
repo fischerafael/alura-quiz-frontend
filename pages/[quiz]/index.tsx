@@ -13,6 +13,7 @@ import {
     WidgetHeader
 } from '../../src/styles/WidgetStyle'
 import { MainButtonStyle } from '../../src/components/Button'
+import calculateResult from '../../src/helpers/calculate-result'
 
 const Quiz = ({ data, questions }) => {
     const [initialTime] = useState(Date.now())
@@ -37,7 +38,15 @@ const Quiz = ({ data, questions }) => {
             setFinalTime(Date.now() - initialTime)
             return
         }
+        setScreenState(screenStates.LOADING)
+        fakeLoading(500)
         setCurrentQuestion(nextQuestion)
+    }
+
+    function fakeLoading(time: number) {
+        setTimeout(function () {
+            setScreenState(screenStates.QUIZ)
+        }, time)
     }
 
     function addCorrectAnswer() {
@@ -54,7 +63,7 @@ const Quiz = ({ data, questions }) => {
         try {
             const response = await api.post(`/quiz/${data.login}/addplayer`, {
                 name: playername,
-                score: calculatePoints(
+                score: calculateResult(
                     correctAnswers,
                     finalTime,
                     totalQuestions
@@ -67,6 +76,13 @@ const Quiz = ({ data, questions }) => {
         }
     }
 
+    if (screenState === screenStates.LOADING)
+        return (
+            <PageContainerLoading>
+                <img src={'loading-transparent.gif'} alt="carregando" />
+            </PageContainerLoading>
+        )
+
     if (screenState === screenStates.QUIZ)
         return (
             <PageContainer>
@@ -74,7 +90,11 @@ const Quiz = ({ data, questions }) => {
                     <title>{data.title}</title>
                 </Head>
                 <QuizContainer>
-                    <img src={'logo-alura.svg'} alt="Logo Alura" />
+                    <img
+                        src={'logo-alura.svg'}
+                        alt="Logo Alura"
+                        className="quiz-logo"
+                    />
                     <QuestinWidget
                         totalQuestions={totalQuestions}
                         questionIndex={currentQuestion}
@@ -93,7 +113,11 @@ const Quiz = ({ data, questions }) => {
                     <title>{data.title}</title>
                 </Head>
                 <ResultContainer>
-                    <img src={'logo-alura.svg'} alt="Logo Alura" />
+                    <img
+                        src={'logo-alura.svg'}
+                        alt="Logo Alura"
+                        className="quiz-logo"
+                    />
                     <Widget>
                         <WidgetHeader>
                             <h3>Resultado</h3>
@@ -102,7 +126,7 @@ const Quiz = ({ data, questions }) => {
                             <p>{`Parabéns ${playername}, você acertou ${correctAnswers} questões em ${(
                                 finalTime / 1000
                             ).toFixed(2)} segundos`}</p>
-                            <h2>{`Você fez ${calculatePoints(
+                            <h2>{`Você fez ${calculateResult(
                                 correctAnswers,
                                 finalTime,
                                 totalQuestions
@@ -118,18 +142,6 @@ const Quiz = ({ data, questions }) => {
 }
 
 export default Quiz
-
-export function calculatePoints(
-    correctAnswer: number,
-    time: number,
-    totalQuestions: number
-) {
-    const absoluteScore = correctAnswer * 100 - time / 1000
-    const finalScore = absoluteScore / totalQuestions
-    const formattedPoints = finalScore.toFixed(2)
-    if (+formattedPoints <= 0) return '0'
-    return formattedPoints
-}
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const login = context.params.quiz as string
@@ -177,11 +189,25 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 export const QuizContainer = styled.div`
     width: 100%;
     max-width: 350px;
-    padding-top: 45px;
+    padding-top: 15px;
     margin: auto 10%;
     @media screen and (max-width: 500px) {
         margin: auto;
         padding: 15px;
+    }
+
+    .quiz-logo {
+        width: 50px;
+    }
+`
+
+export const PageContainerLoading = styled(PageContainer)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 50px;
     }
 `
 

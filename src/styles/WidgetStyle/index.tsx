@@ -80,9 +80,7 @@ export const WidgetImage = styled.img`
     height: 150px;
     object-fit: cover;
 `
-export const WidgetForm = styled.form`
-    padding: 24px 32px 32px 32px;
-`
+export const WidgetForm = styled.form``
 export const WidgetTopic = styled.a`
     outline: 0;
     text-decoration: none;
@@ -95,8 +93,13 @@ export const WidgetTopic = styled.a`
     transition: 0.3s;
     display: block;
 
+    position: relative;
+
     &:hover,
     &:focus {
         opacity: 0.5;
+    }
+
+    input {
     }
 `

@@ -34,6 +34,7 @@ const QuizWidget: React.FC<IQuizWidget> = ({
     const router = useRouter()
     const [name, setName] = useState('')
     const [rankedPlayers, setRankedPlayers] = useState(players)
+    const [showRanking, setShowRanking] = useState(true)
 
     useEffect(() => {
         const rankedScores = players.sort((a, b) => b.score - a.score)
@@ -46,6 +47,11 @@ const QuizWidget: React.FC<IQuizWidget> = ({
         router.push(`/${login}?playername=${name}`)
     }
 
+    function handleShowRanking(e: any) {
+        e.preventDefault()
+        //setShowRanking(!showRanking)
+    }
+
     return (
         <Widget>
             <QuizWidgetHeader style={{ backgroundImage: `url(${background})` }}>
@@ -55,10 +61,10 @@ const QuizWidget: React.FC<IQuizWidget> = ({
             <WidgetContent>{description}</WidgetContent>
             <WidgetFooter>
                 <Input
-                    label="Digite seu nome"
+                    label="Insira seu nome para jogar"
                     value={name}
                     setValue={setName}
-                    placeholder="3 letras no mínimo"
+                    placeholder="Pelo menos 3 caracteres"
                 />
                 {name.length < 3 ? null : (
                     <Button type="widget" onClick={quizNavigateHandler}>
@@ -67,56 +73,72 @@ const QuizWidget: React.FC<IQuizWidget> = ({
                 )}
             </WidgetFooter>
             {players.length > 0 && (
-                <QuizWidgetRankingStyle>
-                    <WidgetHeader>
+                <>
+                    <ClickableWidgetHeader onClick={handleShowRanking}>
                         <h2>Top 5</h2>
-                    </WidgetHeader>
-                    <QuizWidgetRankingContainer>
-                        <div className="ranking-container">
-                            {rankedPlayers.map((player, index) => (
-                                <div className="ranking-card" key={index}>
-                                    {index === 0 ? (
-                                        <span style={{ background: 'yellow' }}>
-                                            1
-                                        </span>
-                                    ) : index === 1 ? (
-                                        <span style={{ background: 'grey' }}>
-                                            2
-                                        </span>
-                                    ) : index === 2 ? (
-                                        <span
-                                            style={{
-                                                background: '#cd7f32'
-                                            }}
-                                        >
-                                            3
-                                        </span>
-                                    ) : (
-                                        <span></span>
-                                    )}
+                    </ClickableWidgetHeader>
+                    {showRanking ? (
+                        <QuizWidgetRankingContainer>
+                            <div className="ranking-container">
+                                {rankedPlayers.map((player, index) => (
+                                    <div className="ranking-card" key={index}>
+                                        {index === 0 ? (
+                                            <span
+                                                style={{ background: 'yellow' }}
+                                            >
+                                                1
+                                            </span>
+                                        ) : index === 1 ? (
+                                            <span
+                                                style={{ background: 'grey' }}
+                                            >
+                                                2
+                                            </span>
+                                        ) : index === 2 ? (
+                                            <span
+                                                style={{
+                                                    background: '#cd7f32'
+                                                }}
+                                            >
+                                                3
+                                            </span>
+                                        ) : (
+                                            <span></span>
+                                        )}
 
-                                    <p className="ranking-username">
-                                        {player.name}
-                                    </p>
-                                    <div className="ranking-score">
-                                        <h3 className="ranking-score-point">
-                                            {player.score}
-                                        </h3>
-                                        <p className="ranking-score-label">
-                                            pontos
+                                        <p className="ranking-username">
+                                            {player.name}
                                         </p>
+                                        <div className="ranking-score">
+                                            <h3 className="ranking-score-point">
+                                                {player.score}
+                                            </h3>
+                                            <p className="ranking-score-label">
+                                                pontos
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    </QuizWidgetRankingContainer>
-                </QuizWidgetRankingStyle>
+                                ))}
+                            </div>
+                        </QuizWidgetRankingContainer>
+                    ) : null}
+                </>
             )}
         </Widget>
     )
 }
 
 export default QuizWidget
+
+export const ClickableWidgetHeader = styled(WidgetHeader)`
+    cursor: pointer;
+
+    transition: 0.5s;
+
+    &:hover {
+        background: ${({ theme }) => theme.colors.secondary};
+    }
+`
 
 export const QuizWidgetRankingStyle = styled.div`
     background: ${({ theme }) => theme.colors.mainBg};
