@@ -1,4 +1,6 @@
 import {
+    QuizWidgetContainer,
+    QuizWidgetContentContainer,
     Widget,
     WidgetContent,
     WidgetFooter,
@@ -34,11 +36,11 @@ const QuizWidget: React.FC<IQuizWidget> = ({
     const router = useRouter()
     const [name, setName] = useState('')
     const [rankedPlayers, setRankedPlayers] = useState(players)
-    const [showRanking, setShowRanking] = useState(true)
+    const [showRanking, setShowRanking] = useState(false)
 
     useEffect(() => {
         const rankedScores = players.sort((a, b) => b.score - a.score)
-        const topFiveScores = rankedScores.slice(0, 5)
+        const topFiveScores = rankedScores.slice(0, 10)
         setRankedPlayers(topFiveScores)
     }, [])
 
@@ -49,33 +51,37 @@ const QuizWidget: React.FC<IQuizWidget> = ({
 
     function handleShowRanking(e: any) {
         e.preventDefault()
-        //setShowRanking(!showRanking)
+        setShowRanking(!showRanking)
     }
 
     return (
-        <Widget>
-            <QuizWidgetHeader style={{ backgroundImage: `url(${background})` }}>
-                <h2>{title}</h2>
-                <div className="linear"></div>
-            </QuizWidgetHeader>
-            <WidgetContent>{description}</WidgetContent>
-            <WidgetFooter>
-                <Input
-                    label="Insira seu nome para jogar"
-                    value={name}
-                    setValue={setName}
-                    placeholder="Pelo menos 3 caracteres"
-                />
-                {name.length < 3 ? null : (
-                    <Button type="widget" onClick={quizNavigateHandler}>
-                        Responder
-                    </Button>
-                )}
-            </WidgetFooter>
+        <QuizWidgetContainer>
+            <QuizWidgetContentContainer>
+                <QuizWidgetHeader
+                    style={{ backgroundImage: `url(${background})` }}
+                >
+                    <h2>{title}</h2>
+                    <div className="linear"></div>
+                </QuizWidgetHeader>
+                <WidgetContent>{description}</WidgetContent>
+                <WidgetFooter>
+                    <Input
+                        label="Insira seu nome para jogar"
+                        value={name}
+                        setValue={setName}
+                        placeholder="Pelo menos 3 caracteres"
+                    />
+                    {name.length < 3 ? null : (
+                        <Button type="widget" onClick={quizNavigateHandler}>
+                            Responder
+                        </Button>
+                    )}
+                </WidgetFooter>
+            </QuizWidgetContentContainer>
             {players.length > 0 && (
                 <>
                     <ClickableWidgetHeader onClick={handleShowRanking}>
-                        <h2>Top 5</h2>
+                        <h2>Ver Top 10</h2>
                     </ClickableWidgetHeader>
                     {showRanking ? (
                         <QuizWidgetRankingContainer>
@@ -124,7 +130,7 @@ const QuizWidget: React.FC<IQuizWidget> = ({
                     ) : null}
                 </>
             )}
-        </Widget>
+        </QuizWidgetContainer>
     )
 }
 
@@ -133,7 +139,9 @@ export default QuizWidget
 export const ClickableWidgetHeader = styled(WidgetHeader)`
     cursor: pointer;
 
-    transition: 0.5s;
+    h2 {
+        font-size: 18px;
+    }
 
     &:hover {
         background: ${({ theme }) => theme.colors.secondary};
@@ -145,6 +153,7 @@ export const QuizWidgetRankingStyle = styled.div`
 `
 export const QuizWidgetRankingContainer = styled.div`
     padding: 32px;
+    border: 1px solid ${({ theme }) => theme.colors.primary};
 
     .ranking-container {
         border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -285,6 +294,8 @@ export const QuizWidgetHeader = styled.header`
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+
+    border-radius: ${({ theme }) => theme.borderRadius};
 
     margin: 0;
     z-index: 99;

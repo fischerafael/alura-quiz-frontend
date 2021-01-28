@@ -10,10 +10,9 @@ import { useEffect, useState } from 'react'
 
 const AluraQuiz = ({ data }) => {
     const [initialData, setInitalData] = useState(data)
+
     const [search, setSearch] = useState('')
     const [filteredData, setFilteredData] = useState(initialData)
-
-    console.log(filteredData)
 
     useEffect(() => {
         setFilteredData(

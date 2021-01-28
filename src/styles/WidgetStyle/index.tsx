@@ -1,5 +1,30 @@
 import styled from 'styled-components'
 
+export const QuizWidgetContainer = styled.div`
+    margin-top: 24px;
+    margin-bottom: 24px;
+
+    background-color: ${({ theme }) => {
+        return theme.colors.mainBg
+    }};
+    border-radius: ${({ theme }) => {
+        return theme.borderRadius
+    }};
+
+    overflow: hidden;
+    z-index: 10;
+`
+export const QuizWidgetContentContainer = styled.div`
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    border-radius: ${({ theme }) => {
+            return theme.borderRadius
+        }}
+        ${({ theme }) => {
+            return theme.borderRadius
+        }}
+        0 0;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+`
 export const Widget = styled.div`
     margin-top: 24px;
     margin-bottom: 24px;
