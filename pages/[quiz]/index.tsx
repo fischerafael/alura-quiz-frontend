@@ -127,6 +127,7 @@ export function calculatePoints(
     const absoluteScore = correctAnswer * 100 - time / 1000
     const finalScore = absoluteScore / totalQuestions
     const formattedPoints = finalScore.toFixed(2)
+    if (+formattedPoints <= 0) return '0'
     return formattedPoints
 }
 

@@ -9,7 +9,7 @@ import Button from '../Button'
 import Input from '../Input'
 
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 interface IQuizWidget {
@@ -33,6 +33,13 @@ const QuizWidget: React.FC<IQuizWidget> = ({
 }) => {
     const router = useRouter()
     const [name, setName] = useState('')
+    const [rankedPlayers, setRankedPlayers] = useState(players)
+
+    useEffect(() => {
+        const rankedScores = players.sort((a, b) => b.score - a.score)
+        const topFiveScores = rankedScores.slice(0, 5)
+        setRankedPlayers(topFiveScores)
+    }, [])
 
     function quizNavigateHandler(e: any) {
         e.preventDefault()
@@ -59,27 +66,129 @@ const QuizWidget: React.FC<IQuizWidget> = ({
                     </Button>
                 )}
             </WidgetFooter>
+            {players.length > 0 && (
+                <QuizWidgetRankingStyle>
+                    <WidgetHeader>
+                        <h2>Top 5</h2>
+                    </WidgetHeader>
+                    <QuizWidgetRankingContainer>
+                        <div className="ranking-container">
+                            {rankedPlayers.map((player, index) => (
+                                <div className="ranking-card" key={index}>
+                                    {index === 0 ? (
+                                        <span style={{ background: 'yellow' }}>
+                                            1
+                                        </span>
+                                    ) : index === 1 ? (
+                                        <span style={{ background: 'grey' }}>
+                                            2
+                                        </span>
+                                    ) : index === 2 ? (
+                                        <span
+                                            style={{
+                                                background: '#cd7f32'
+                                            }}
+                                        >
+                                            3
+                                        </span>
+                                    ) : (
+                                        <span></span>
+                                    )}
 
-            <QuizWidgetRanking>
-                {players.length > 0 && (
-                    <h2 className="ranking-title">Ranking</h2>
-                )}
-                {players.map((player) => (
-                    <div className="ranking">
-                        <h2>{player.name}</h2>
-                        <div>
-                            <h3>{player.score}</h3>
-                            <p>pontos</p>
+                                    <p className="ranking-username">
+                                        {player.name}
+                                    </p>
+                                    <div className="ranking-score">
+                                        <h3 className="ranking-score-point">
+                                            {player.score}
+                                        </h3>
+                                        <p className="ranking-score-label">
+                                            pontos
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
-                ))}
-            </QuizWidgetRanking>
+                    </QuizWidgetRankingContainer>
+                </QuizWidgetRankingStyle>
+            )}
         </Widget>
     )
 }
 
 export default QuizWidget
 
+export const QuizWidgetRankingStyle = styled.div`
+    background: ${({ theme }) => theme.colors.mainBg};
+`
+export const QuizWidgetRankingContainer = styled.div`
+    padding: 32px;
+
+    .ranking-container {
+        border: 1px solid ${({ theme }) => theme.colors.primary};
+        border-radius: ${({ theme }) => theme.borderRadius};
+        padding: 0 6px;
+
+        .ranking-card {
+            background: ${({ theme }) => theme.colors.primary};
+
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr;
+            grid-gap: 6px;
+
+            margin: 6px 0;
+
+            transition: 0.5s;
+
+            &:hover {
+                background: ${({ theme }) => theme.colors.secondary};
+            }
+
+            span {
+                width: 25px;
+                height: 25px;
+                border-radius: 12.5px;
+                align-self: center;
+                justify-self: center;
+                background: ${({ theme }) => theme.colors.contrastText};
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                font-weight: bold;
+                font-size: 10px;
+            }
+
+            .ranking-username {
+                font-weight: bold;
+                font-size: 12px;
+                align-self: center;
+                justify-self: flex-start;
+            }
+
+            .ranking-score {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+
+                .ranking-score-point {
+                    font-size: 12px;
+                    font-weight: bold;
+                    padding: 0;
+                    margin: 0;
+                }
+
+                .ranking-score-label {
+                    font-size: 10px;
+                    padding: 0;
+                    margin: 0;
+                }
+            }
+        }
+    }
+`
 export const QuizWidgetRanking = styled.div`
     padding: 0 32px;
     padding-bottom: 18px;
