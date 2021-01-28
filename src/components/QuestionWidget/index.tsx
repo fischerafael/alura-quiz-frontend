@@ -14,11 +14,23 @@ const QuestinWidget = ({
     questionIndex,
     question,
     onSubmit,
-    addCorrectAnswer
+    setAnswersArray
 }) => {
     const questionId = `question__${questionIndex}`
 
-    const [answer, setAnswer] = useState(0)
+    const [selectedAlternative, setSelectedAlternative] = useState(undefined)
+    const correctAlternative = +question.answer
+
+    function isCorrect() {
+        if (correctAlternative !== selectedAlternative) return 0
+        return 1
+    }
+
+    function handleNextQuestion(e: any) {
+        e.preventDefault()
+        setAnswersArray((prevState: number[]) => [...prevState, isCorrect()])
+        onSubmit()
+    }
 
     return (
         <Widget>
@@ -43,22 +55,16 @@ const QuestinWidget = ({
                                 type="radio"
                                 id={alternativeId}
                                 name={questionId}
-                                onChange={() => setAnswer(alternativeIndex)}
+                                onChange={() => {
+                                    setSelectedAlternative(alternativeIndex)
+                                }}
                             />
                             {alternative}
                         </WidgetTopic>
                     )
                 })}
             </WidgetForm>
-            <MainButtonStyle
-                onClick={(e) => {
-                    e.preventDefault
-                    if (answer === +question.answer) {
-                        addCorrectAnswer()
-                    }
-                    onSubmit()
-                }}
-            >
+            <MainButtonStyle onClick={handleNextQuestion}>
                 Confirmar
             </MainButtonStyle>
         </Widget>

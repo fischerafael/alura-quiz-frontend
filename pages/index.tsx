@@ -12,7 +12,7 @@ const AluraQuiz = ({ data }) => {
     const [initialData, setInitalData] = useState(data)
 
     const [search, setSearch] = useState('')
-    const [filteredData, setFilteredData] = useState(initialData)
+    const [filteredData, setFilteredData] = useState(initialData || [])
 
     useEffect(() => {
         setFilteredData(

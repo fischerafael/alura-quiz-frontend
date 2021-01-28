@@ -18,9 +18,17 @@ import calculateResult from '../../src/helpers/calculate-result'
 const Quiz = ({ data, questions }) => {
     const [initialTime] = useState(Date.now())
     const [finalTime, setFinalTime] = useState(Date.now())
-    const [correctAnswers, setCorrectAnswers] = useState(0)
+    const [answersArray, setAnswersArray] = useState([])
 
-    console.log('ranking', initialTime, finalTime, correctAnswers)
+    const rightAnswers = answersArray.reduce((total, currentValue) => {
+        const isRight = currentValue === 1
+        if (isRight) {
+            return total + 1
+        }
+        return total
+    }, 0)
+
+    console.log('total', rightAnswers)
 
     const [screenState, setScreenState] = useState(screenStates.QUIZ)
 
@@ -33,11 +41,13 @@ const Quiz = ({ data, questions }) => {
 
     function handleSubmitQuiz() {
         const nextQuestion = currentQuestion + 1
+
         if (nextQuestion === totalQuestions) {
             setScreenState(screenStates.RESULT)
             setFinalTime(Date.now() - initialTime)
             return
         }
+
         setScreenState(screenStates.LOADING)
         fakeLoading(500)
         setCurrentQuestion(nextQuestion)
@@ -47,10 +57,6 @@ const Quiz = ({ data, questions }) => {
         setTimeout(function () {
             setScreenState(screenStates.QUIZ)
         }, time)
-    }
-
-    function addCorrectAnswer() {
-        setCorrectAnswers(correctAnswers + 1)
     }
 
     async function handleReplay(e) {
@@ -63,11 +69,7 @@ const Quiz = ({ data, questions }) => {
         try {
             const response = await api.post(`/quiz/${data.login}/addplayer`, {
                 name: playername,
-                score: calculateResult(
-                    correctAnswers,
-                    finalTime,
-                    totalQuestions
-                ),
+                score: calculateResult(rightAnswers, finalTime, totalQuestions),
                 time: finalTime
             })
             console.log(response)
@@ -100,7 +102,7 @@ const Quiz = ({ data, questions }) => {
                         questionIndex={currentQuestion}
                         question={question}
                         onSubmit={handleSubmitQuiz}
-                        addCorrectAnswer={addCorrectAnswer}
+                        setAnswersArray={setAnswersArray}
                     />
                 </QuizContainer>
             </PageContainer>
@@ -123,11 +125,29 @@ const Quiz = ({ data, questions }) => {
                             <h3>Resultado</h3>
                         </WidgetHeader>
                         <WidgetContent>
-                            <p>{`Parabéns ${playername}, você acertou ${correctAnswers} questões em ${(
-                                finalTime / 1000
-                            ).toFixed(2)} segundos`}</p>
+                            {rightAnswers === 0 && (
+                                <p>{`Ei ${playername}, em ${(
+                                    finalTime / 1000
+                                ).toFixed(
+                                    2
+                                )} segundos você não acertou nenhuma pergunta`}</p>
+                            )}
+                            {rightAnswers === 1 && (
+                                <p>{`Ei ${playername}, em ${(
+                                    finalTime / 1000
+                                ).toFixed(
+                                    2
+                                )} segundos você acertou ${rightAnswers} apenas uma pergunta`}</p>
+                            )}
+                            {rightAnswers > 1 && (
+                                <p>{`Ei ${playername}, em ${(
+                                    finalTime / 1000
+                                ).toFixed(
+                                    2
+                                )} segundos você acertou ${rightAnswers} perguntas`}</p>
+                            )}
                             <h2>{`Você fez ${calculateResult(
-                                correctAnswers,
+                                rightAnswers,
                                 finalTime,
                                 totalQuestions
                             )} pontos.`}</h2>
