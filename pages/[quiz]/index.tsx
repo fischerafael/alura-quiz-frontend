@@ -144,27 +144,12 @@ const Quiz = ({ data, questions }) => {
                             <h3>Resultado</h3>
                         </WidgetHeader>
                         <WidgetContent>
-                            {rightAnswers === 0 && (
-                                <p>{`Ei ${playername}, em ${(
-                                    finalTime / 1000
-                                ).toFixed(
-                                    2
-                                )} segundos você não acertou nenhuma pergunta`}</p>
-                            )}
-                            {rightAnswers === 1 && (
-                                <p>{`Ei ${playername}, em ${(
-                                    finalTime / 1000
-                                ).toFixed(
-                                    2
-                                )} segundos você acertou ${rightAnswers} apenas uma pergunta`}</p>
-                            )}
-                            {rightAnswers > 1 && (
-                                <p>{`Ei ${playername}, em ${(
-                                    finalTime / 1000
-                                ).toFixed(
-                                    2
-                                )} segundos você acertou ${rightAnswers} perguntas`}</p>
-                            )}
+                            <p>{`Ei ${playername}, em ${(
+                                finalTime / 1000
+                            ).toFixed(
+                                2
+                            )} segundos você não acertou ${rightAnswers} de ${totalQuestions} perguntas.`}</p>
+
                             <h2>{`Você fez ${calculateResult(
                                 rightAnswers,
                                 finalTime,

@@ -1,14 +1,17 @@
 import styled from 'styled-components'
 import { GetStaticProps } from 'next'
 
-import Button from '../src/components/Button'
+import Button, { SecondaryButtonStyle } from '../src/components/Button'
 import GitHubCorner from '../src/components/GitHubCorner'
 import Input from '../src/components/Input'
 import QuizWidget from '../src/components/QuizWidget'
 import api from '../src/services/api'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 
 const AluraQuiz = ({ data }) => {
+    const router = useRouter()
+
     const [initialData, setInitalData] = useState(data)
 
     const [search, setSearch] = useState('')
@@ -48,7 +51,13 @@ const AluraQuiz = ({ data }) => {
                             value={search}
                             setValue={setSearch}
                         />
-                        <Button type={'secondary'}>CRIAR NOVO QUIZ</Button>
+                        <SecondaryButtonStyle
+                            onClick={() => {
+                                router.push('/login')
+                            }}
+                        >
+                            CRIAR NOVO QUIZ
+                        </SecondaryButtonStyle>
                     </div>
                 </div>
             </HeroSectionContainer>
