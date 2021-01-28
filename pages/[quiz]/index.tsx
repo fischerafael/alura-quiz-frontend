@@ -30,6 +30,15 @@ const Quiz = ({ data, questions }) => {
 
     const [screenState, setScreenState] = useState(screenStates.QUIZ)
 
+    useEffect(() => {
+        if (questions.length === 0) {
+            setScreenState(screenStates.EMPTY)
+            setTimeout(() => {
+                router.push('/')
+            }, 2000)
+        }
+    }, [])
+
     const router = useRouter()
     const { playername } = router.query
 
@@ -76,6 +85,16 @@ const Quiz = ({ data, questions }) => {
         }
     }
 
+    if (screenState === screenStates.EMPTY)
+        return (
+            <PageContainerLoading>
+                <h2>
+                    Ainda não existem perguntas cadastradas neste quiz! Tente
+                    jogar outros!
+                </h2>
+            </PageContainerLoading>
+        )
+
     if (screenState === screenStates.LOADING)
         return (
             <PageContainerLoading>
@@ -95,13 +114,15 @@ const Quiz = ({ data, questions }) => {
                         alt="Logo Alura"
                         className="quiz-logo"
                     />
-                    <QuestinWidget
-                        totalQuestions={totalQuestions}
-                        questionIndex={currentQuestion}
-                        question={question}
-                        onSubmit={handleSubmitQuiz}
-                        setAnswersArray={setAnswersArray}
-                    />
+                    {question && (
+                        <QuestinWidget
+                            totalQuestions={totalQuestions}
+                            questionIndex={currentQuestion}
+                            question={question}
+                            onSubmit={handleSubmitQuiz}
+                            setAnswersArray={setAnswersArray}
+                        />
+                    )}
                 </QuizContainer>
             </PageContainer>
         )

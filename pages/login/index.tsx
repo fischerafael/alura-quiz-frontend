@@ -9,7 +9,7 @@ import { MainButtonStyle } from '../../src/components/Button'
 import Input from '../../src/components/Input'
 import api from '../../src/services/api'
 import { defaultTheme } from '../../src/services/default-theme'
-import screenStates from '../../src/services/screen-states'
+
 import { DefaultInputStyle } from '../../src/styles/InputStyle'
 import {
     Widget,
@@ -62,9 +62,9 @@ const Login = () => {
 
             const { data } = response
 
-            const { _id } = data
+            const { login } = data
 
-            router.push(`/login/questions?quizid=${_id}`)
+            router.push(`/login/${login}`)
         } catch (err) {
             console.log(err)
             setScreenState('register')
@@ -80,9 +80,9 @@ const Login = () => {
 
             const { data } = response
 
-            const { _id } = data
+            const { login } = data
 
-            router.push(`/login/questions?quizid=${_id}`)
+            router.push(`/login/${login}`)
         } catch (err) {
             setScreenState('login')
             setLoginSession('')
