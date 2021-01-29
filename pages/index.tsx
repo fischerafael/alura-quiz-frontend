@@ -165,14 +165,13 @@ export const HeroSectionContainer = styled.div`
             );
 
             height: 100%;
-            width: 80%;
+            width: 50%;
         }
 
         img {
             height: 100%;
             width: 100%;
             object-fit: cover;
-            object-position: 0%;
         }
 
         .linear-gradient-b {
@@ -188,7 +187,7 @@ export const HeroSectionContainer = styled.div`
             );
 
             height: 100%;
-            width: 80%;
+            width: 100%;
         }
     }
 
@@ -207,7 +206,11 @@ export const HeroSectionContainer = styled.div`
         }
 
         h1 {
+            padding: 0;
             font-size: 36px;
+
+            font-weight: 900;
+            line-height: 1.2;
         }
 
         p {
