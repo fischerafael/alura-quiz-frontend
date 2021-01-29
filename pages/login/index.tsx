@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 import { PageContainer } from '..'
 import { MainButtonStyle } from '../../src/components/Button'
+import CustomHead from '../../src/components/CustomHead'
 
 import Input from '../../src/components/Input'
 import api from '../../src/services/api'
@@ -93,14 +94,18 @@ const Login = () => {
     }
 
     if (screenState === 'loading')
-        return <RegisterPageContainer>Carregando...</RegisterPageContainer>
+        return (
+            <>
+                {' '}
+                <CustomHead pageTitle="Carregando..." />
+                <RegisterPageContainer>Carregando...</RegisterPageContainer>
+            </>
+        )
 
     if (screenState === 'register')
         return (
             <RegisterPageContainer>
-                <Head>
-                    <title>Cadastrar Quiz</title>
-                </Head>
+                <CustomHead pageTitle="Criar quiz" />
                 <FormLoginContainer>
                     <img
                         src={'logo-alura.svg'}
@@ -167,9 +172,7 @@ const Login = () => {
 
     return (
         <LoginPageContainer>
-            <Head>
-                <title>Acessar Quiz</title>
-            </Head>
+            <CustomHead pageTitle="Acrescentar questões a um quiz" />
             <FormLoginContainer>
                 <img
                     src={'logo-alura.svg'}

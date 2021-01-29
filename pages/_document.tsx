@@ -31,7 +31,9 @@ export default class MyDocument extends Document {
     render() {
         return (
             <Html lang="pt">
-                <Head></Head>
+                <Head>
+                    <link rel="shortcut icon" href="/logo-alura.svg" />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />

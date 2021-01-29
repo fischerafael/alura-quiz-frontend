@@ -14,6 +14,7 @@ import {
 } from '../../src/styles/WidgetStyle'
 import { MainButtonStyle } from '../../src/components/Button'
 import calculateResult from '../../src/helpers/calculate-result'
+import CustomHead from '../../src/components/CustomHead'
 
 const Quiz = ({ data, questions }) => {
     const [initialTime] = useState(Date.now())
@@ -87,28 +88,33 @@ const Quiz = ({ data, questions }) => {
 
     if (screenState === screenStates.EMPTY)
         return (
-            <PageContainerLoading>
-                <h2>
-                    Ainda não existem perguntas cadastradas neste quiz! Tente
-                    jogar outros!
-                </h2>
-            </PageContainerLoading>
+            <>
+                <CustomHead pageTitle="Ooops..." />
+                <PageContainerLoading>
+                    <h2>
+                        Ainda não existem perguntas cadastradas neste quiz!
+                        Tente jogar outros!
+                    </h2>
+                </PageContainerLoading>
+            </>
         )
 
     if (screenState === screenStates.LOADING)
         return (
-            <PageContainerLoading>
-                <img src={'loading-transparent.gif'} alt="carregando" />
-                <h2>Prepare-se para a próxima pergunta!</h2>
-            </PageContainerLoading>
+            <>
+                <CustomHead pageTitle="Carregando..." />
+                <PageContainerLoading>
+                    <img src={'loading-transparent.gif'} alt="carregando" />
+                    <h2>Prepare-se para a próxima pergunta!</h2>
+                </PageContainerLoading>
+            </>
         )
 
     if (screenState === screenStates.QUIZ)
         return (
             <PageContainer>
-                <Head>
-                    <title>{data.title}</title>
-                </Head>
+                <CustomHead pageTitle={data.title} />
+
                 <QuizContainer>
                     <img
                         src={'logo-alura.svg'}
@@ -130,39 +136,43 @@ const Quiz = ({ data, questions }) => {
 
     if (screenState === screenStates.RESULT)
         return (
-            <PageContainer>
-                <Head>
-                    <title>{data.title}</title>
-                </Head>
-                <ResultContainer>
-                    <img
-                        src={'logo-alura.svg'}
-                        alt="Logo Alura"
-                        className="quiz-logo"
-                    />
-                    <Widget>
-                        <WidgetHeader>
-                            <h3>Resultado</h3>
-                        </WidgetHeader>
-                        <WidgetContent>
-                            <p>{`Ei ${playername}, em ${(
-                                finalTime / 1000
-                            ).toFixed(
-                                2
-                            )} segundos você não acertou ${rightAnswers} de ${totalQuestions} perguntas.`}</p>
+            <>
+                <CustomHead pageTitle={`${data.title} - Resultado`} />
+                <PageContainer>
+                    <ResultContainer>
+                        <img
+                            src={'logo-alura.svg'}
+                            alt="Logo Alura"
+                            className="quiz-logo"
+                        />
+                        <Widget>
+                            <WidgetHeader>
+                                <h3>Resultado</h3>
+                            </WidgetHeader>
+                            <WidgetContent>
+                                <p
+                                    style={{ textAlign: 'center' }}
+                                >{`Ei ${playername}! Em ${(
+                                    finalTime / 1000
+                                ).toFixed(
+                                    2
+                                )} segundos você acertou ${rightAnswers} de ${totalQuestions} perguntas.`}</p>
 
-                            <h2>{`Você fez ${calculateResult(
-                                rightAnswers,
-                                finalTime,
-                                totalQuestions
-                            )} pontos.`}</h2>
-                        </WidgetContent>
-                        <MainButtonStyle onClick={handleReplay}>
-                            Jogar outros quizes
-                        </MainButtonStyle>
-                    </Widget>
-                </ResultContainer>
-            </PageContainer>
+                                <h2
+                                    style={{ textAlign: 'center' }}
+                                >{`Você fez ${calculateResult(
+                                    rightAnswers,
+                                    finalTime,
+                                    totalQuestions
+                                )} pontos.`}</h2>
+                            </WidgetContent>
+                            <MainButtonStyle onClick={handleReplay}>
+                                Jogar outros quizes
+                            </MainButtonStyle>
+                        </Widget>
+                    </ResultContainer>
+                </PageContainer>
+            </>
         )
 }
 

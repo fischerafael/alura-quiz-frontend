@@ -15,6 +15,7 @@ import {
     WidgetHeader
 } from '../../../src/styles/WidgetStyle'
 import Input from '../../../src/components/Input'
+import CustomHead from '../../../src/components/CustomHead'
 
 const Questions = ({ data, questions }) => {
     const [existingQuestins, setExistingQuestions] = useState(questions)
@@ -83,11 +84,17 @@ const Questions = ({ data, questions }) => {
     }
 
     if (screenState === 'loading')
-        return <LoadingContainerStyle>Carregando...</LoadingContainerStyle>
+        return (
+            <>
+                <CustomHead pageTitle="Carregando..." />
+                <LoadingContainerStyle>Carregando...</LoadingContainerStyle>
+            </>
+        )
 
     if (screenState === 'new-question')
         return (
             <PageContainer>
+                <CustomHead pageTitle="Nova questão" />
                 <Link href="/">
                     <a>
                         <img
@@ -197,6 +204,7 @@ const Questions = ({ data, questions }) => {
     if (screenState === 'main')
         return (
             <PageContainer>
+                <CustomHead pageTitle="Questões existentes" />
                 <NavBarStyle>
                     <Link href="/">
                         <a>

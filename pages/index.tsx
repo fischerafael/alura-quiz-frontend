@@ -8,6 +8,7 @@ import QuizWidget from '../src/components/QuizWidget'
 import api from '../src/services/api'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import CustomHead from '../src/components/CustomHead'
 
 const AluraQuiz = ({ data }) => {
     const router = useRouter()
@@ -29,6 +30,7 @@ const AluraQuiz = ({ data }) => {
 
     return (
         <PageContainer>
+            <CustomHead pageTitle="AluraQuiz" />
             <HeroSectionContainer>
                 <div className="hero-img">
                     <div className="linear-gradient-a"></div>
