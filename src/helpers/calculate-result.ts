@@ -3,7 +3,7 @@ function calculateResult(
     time: number,
     totalQuestions: number
 ) {
-    const timeInSecondes = (time / 1000) * 0.5
+    const timeInSecondes = (time / 1000) * 0.25
     const score = (100 * correctAnswer) / totalQuestions
     const finalScore = score - timeInSecondes
 

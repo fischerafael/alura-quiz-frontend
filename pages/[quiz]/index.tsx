@@ -56,7 +56,7 @@ const Quiz = ({ data, questions }) => {
         }
 
         setScreenState(screenStates.LOADING)
-        fakeLoading(500)
+        fakeLoading(1000)
         setCurrentQuestion(nextQuestion)
     }
 
@@ -99,6 +99,7 @@ const Quiz = ({ data, questions }) => {
         return (
             <PageContainerLoading>
                 <img src={'loading-transparent.gif'} alt="carregando" />
+                <h2>Prepare-se para a próxima pergunta!</h2>
             </PageContainerLoading>
         )
 
@@ -232,6 +233,12 @@ export const PageContainerLoading = styled(PageContainer)`
 
     img {
         width: 50px;
+    }
+
+    h2 {
+        width: 300px;
+        text-justify: center;
+        text-align: center;
     }
 `
 

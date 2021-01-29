@@ -70,6 +70,12 @@ const Questions = ({ data, questions }) => {
             )
 
             setScreenState('main')
+            setQuestionTitle('')
+            setQuestionImage('')
+            setQuestionDescription('')
+            setQuestionAlternative('')
+            setQuestionAlternatives([])
+            setCorrectAnswer(undefined)
         } catch (err) {
             console.log(err)
             setScreenState('new-question')
@@ -77,14 +83,27 @@ const Questions = ({ data, questions }) => {
     }
 
     if (screenState === 'loading')
-        return <PageContainer>Carregando...</PageContainer>
+        return <LoadingContainerStyle>Carregando...</LoadingContainerStyle>
 
     if (screenState === 'new-question')
         return (
             <PageContainer>
+                <Link href="/">
+                    <a>
+                        <img
+                            style={{ marginTop: '15px' }}
+                            src={'/logo-alura.svg'}
+                            alt="Logo Alura"
+                        />
+                    </a>
+                </Link>
                 <Widget>
                     <WidgetHeader>Preencha os campos a seguir</WidgetHeader>
                     <WidgetContent>
+                        {questionImage !== '' && (
+                            <FormImageStyle src={questionImage} alt="" />
+                        )}
+
                         <Input
                             login={true}
                             label="Pergunta"
@@ -429,4 +448,16 @@ export const CardBodyStyle = styled.div`
 
         font-size: 10px;
     }
+`
+
+const LoadingContainerStyle = styled(PageContainer)`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
+
+const FormImageStyle = styled.img`
+    width: 300px;
+    height: 100px;
+    object-fit: cover;
 `
